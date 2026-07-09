@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kettlestone Rainfall Record</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Kettlestone weather notes</p>
+          <h1>Building a longer village rainfall record</h1>
+          <p class="intro">
+            I started recording weekly rainfall this year. I am hoping to compare it with older
+            local readings so we can see how this season fits into the village's longer pattern.
+          </p>
+          <div class="hero-actions">
+            <a href="#data-request" class="primary-action">Share older readings</a>
+            <a href="#summary" class="secondary-action">View current summary</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="summary" class="summary-band">
+        <div class="section-heading">
+          <p class="eyebrow">Current 2026 record</p>
+          <h2>Rainfall so far</h2>
+        </div>
+        <div class="stats-grid" id="statsGrid"></div>
+      </section>
+
+      <section class="chart-section" aria-labelledby="chart-title">
+        <div class="chart-heading">
+          <div>
+            <p class="eyebrow">Rainfall and temperature</p>
+            <h2 id="chart-title">Weekly rainfall with max and min temperatures</h2>
+          </div>
+          <div class="legend" aria-label="Chart legend">
+            <span><i class="rain"></i>Rainfall mm</span>
+            <span><i class="max"></i>Max temp C</span>
+            <span><i class="min"></i>Min temp C</span>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="weatherChart" aria-label="Weekly rainfall and temperature chart"></canvas>
+        </div>
+        <p class="source-note">
+          Temperature figures are weekly max/min values calculated from daily Open-Meteo data near
+          Kettlestone. Later weeks are left blank until the week is complete.
+        </p>
+      </section>
+
+      <section id="data-request" class="request-section">
+        <div class="request-copy">
+          <p class="eyebrow">What would help</p>
+          <h2>Do you have older local rainfall readings?</h2>
+          <p>
+            Older readings from Kettlestone or nearby would make this much more useful. Weekly
+            totals are ideal, but monthly totals, handwritten notes, or photos of a notebook would
+            still be valuable.
+          </p>
+        </div>
+        <div class="request-list" aria-label="Requested rainfall data">
+          <div>
+            <strong>Most useful</strong>
+            <span>Week or date range, rainfall amount, and unit used.</span>
+          </div>
+          <div>
+            <strong>Still helpful</strong>
+            <span>Monthly totals, unusually wet or dry notes, or gauge location.</span>
+          </div>
+          <div>
+            <strong>Easy format</strong>
+            <span>A spreadsheet, typed list, scanned page, or phone photo is fine.</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
