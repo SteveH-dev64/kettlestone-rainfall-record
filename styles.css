@@ -1,25 +1,34 @@
 :root {
   color-scheme: light;
-  --ink: #15262d;
-  --muted: #52666f;
-  --line: #c8d7dc;
-  --paper: #f7fbfb;
-  --rain: #1f6f8b;
-  --max: #c75f2b;
-  --min: #5b6fb9;
-  --leaf: #597b54;
-  --sun: #f0b44c;
+  --ink: #142429;
+  --muted: #53666b;
+  --paper: #f7fbf8;
+  --mist: #e9f2ef;
+  --line: #c9dad7;
+  --rain: #1d7189;
+  --rain-dark: #0f4d62;
+  --max: #c45d2c;
+  --min: #536fc1;
+  --leaf: #55764c;
+  --sun: #e7ae45;
+  --berry: #8f3f5c;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--ink);
-  background: #eef5f2;
+  background:
+    linear-gradient(180deg, rgba(233, 242, 239, 0.9), rgba(247, 251, 248, 0.95)),
+    #eef5f2;
 }
 
 main {
@@ -29,26 +38,40 @@ main {
 
 .hero {
   min-height: 92vh;
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 330px);
+  gap: 32px;
+  align-items: end;
   margin: 16px 0 28px;
   padding: 44px;
   position: relative;
   overflow: hidden;
   border-radius: 8px;
   background-image:
-    linear-gradient(90deg, rgba(238, 245, 242, 0.95) 0%, rgba(238, 245, 242, 0.82) 46%, rgba(238, 245, 242, 0.08) 100%),
+    linear-gradient(90deg, rgba(247, 251, 248, 0.97) 0%, rgba(247, 251, 248, 0.88) 50%, rgba(247, 251, 248, 0.18) 100%),
     url("assets/rain-gauge-hero.png");
   background-size: cover;
   background-position: center;
-  box-shadow: 0 20px 50px rgba(21, 38, 45, 0.14);
+  box-shadow: 0 24px 62px rgba(20, 36, 41, 0.16);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 44px 34px 44px;
+  height: 1px;
+  background: rgba(20, 36, 41, 0.22);
+}
+
+.hero-copy,
+.hero-panel {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-copy {
-  max-width: 760px;
-  padding: 20px 0;
-  position: relative;
-  z-index: 1;
+  max-width: 790px;
+  padding: 20px 0 54px;
 }
 
 .eyebrow {
@@ -61,27 +84,32 @@ main {
 }
 
 h1,
-h2 {
+h2,
+h3 {
   margin: 0;
   letter-spacing: 0;
 }
 
 h1 {
-  max-width: 780px;
-  font-size: clamp(2.4rem, 7vw, 5.4rem);
+  max-width: 900px;
+  font-size: clamp(2.45rem, 6.8vw, 5.45rem);
   line-height: 0.98;
 }
 
 h2 {
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-size: clamp(1.6rem, 3vw, 2.45rem);
   line-height: 1.08;
 }
 
+h3 {
+  font-size: 1.12rem;
+}
+
 .intro {
-  max-width: 680px;
+  max-width: 710px;
   margin: 22px 0 0;
   color: var(--muted);
-  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-size: clamp(1.05rem, 2vw, 1.34rem);
   line-height: 1.55;
 }
 
@@ -93,36 +121,68 @@ h2 {
 }
 
 .primary-action,
-.secondary-action {
+.secondary-action,
+.chart-controls button {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
   justify-content: center;
-  padding: 0 18px;
   border-radius: 6px;
   font-weight: 700;
   text-decoration: none;
 }
 
+.primary-action,
+.secondary-action {
+  padding: 0 18px;
+}
+
 .primary-action {
   color: white;
-  background: var(--rain);
+  background: var(--rain-dark);
 }
 
 .secondary-action {
-  color: var(--rain);
-  border: 1px solid var(--rain);
-  background: rgba(255, 255, 255, 0.5);
+  color: var(--rain-dark);
+  border: 1px solid var(--rain-dark);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.hero-panel {
+  align-self: end;
+  margin-bottom: 54px;
+  padding: 22px;
+  border: 1px solid rgba(20, 36, 41, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+.hero-panel span,
+.hero-panel em {
+  display: block;
+  color: var(--muted);
+  font-style: normal;
+}
+
+.hero-panel strong {
+  display: block;
+  margin: 8px 0;
+  color: var(--rain-dark);
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  line-height: 1;
 }
 
 .summary-band,
 .chart-section,
+.thanks-band,
+.season-section,
 .request-section {
   margin: 22px 0;
   padding: 30px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.74);
+  background: rgba(255, 255, 255, 0.78);
 }
 
 .section-heading,
@@ -134,6 +194,49 @@ h2 {
   margin-bottom: 22px;
 }
 
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.impact-grid article,
+.stat,
+.season-card,
+.year-ring,
+.request-list div {
+  border: 1px solid #d8e6e2;
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+.impact-grid article {
+  min-height: 190px;
+  padding: 20px;
+}
+
+.impact-grid span {
+  color: var(--sun);
+  font-weight: 700;
+}
+
+.impact-grid h3 {
+  margin-top: 24px;
+}
+
+.impact-grid p,
+.request-copy p,
+.source-note,
+.season-card p {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.impact-grid p,
+.season-card p {
+  margin: 10px 0 0;
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(130px, 1fr));
@@ -141,11 +244,8 @@ h2 {
 }
 
 .stat {
-  min-height: 96px;
+  min-height: 104px;
   padding: 16px;
-  border-radius: 8px;
-  background: var(--paper);
-  border: 1px solid #dbe8ea;
 }
 
 .stat span {
@@ -159,6 +259,29 @@ h2 {
   margin-top: 12px;
   font-size: clamp(1.35rem, 2.5vw, 2rem);
   line-height: 1.05;
+}
+
+.chart-controls {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f3f8f6;
+}
+
+.chart-controls button {
+  min-height: 38px;
+  padding: 0 13px;
+  border: 0;
+  color: var(--rain-dark);
+  background: transparent;
+  cursor: pointer;
+}
+
+.chart-controls button.is-active {
+  color: white;
+  background: var(--rain-dark);
 }
 
 .legend {
@@ -202,6 +325,10 @@ h2 {
   padding: 12px 0 0;
 }
 
+.monthly-wrap {
+  height: min(58vh, 500px);
+}
+
 canvas {
   width: 100%;
   height: 100%;
@@ -210,9 +337,70 @@ canvas {
 
 .source-note {
   margin: 16px 0 0;
-  color: var(--muted);
   font-size: 0.95rem;
-  line-height: 1.45;
+}
+
+.season-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  gap: 18px;
+}
+
+.season-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.season-card {
+  min-height: 132px;
+  padding: 18px;
+}
+
+.season-card strong {
+  display: block;
+  margin-top: 12px;
+  color: var(--rain-dark);
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.year-rings {
+  display: grid;
+  gap: 12px;
+}
+
+.year-ring {
+  display: grid;
+  grid-template-columns: 68px 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+}
+
+.ring {
+  width: 68px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--rain-dark);
+  font-size: 0.84rem;
+  font-weight: 700;
+  background:
+    radial-gradient(circle at center, var(--paper) 0 52%, transparent 53%),
+    conic-gradient(var(--rain) var(--progress), #dce9e6 0);
+}
+
+.year-ring span,
+.year-ring em {
+  display: block;
+}
+
+.year-ring em {
+  margin-top: 4px;
+  color: var(--muted);
+  font-style: normal;
 }
 
 .request-section {
@@ -220,13 +408,11 @@ canvas {
   grid-template-columns: minmax(0, 0.9fr) minmax(280px, 1.1fr);
   gap: 28px;
   margin-bottom: 44px;
-  background: #f8f7f1;
+  background: #fbfaf4;
 }
 
 .request-copy p {
   margin: 16px 0 0;
-  color: var(--muted);
-  line-height: 1.55;
   font-size: 1.04rem;
 }
 
@@ -238,7 +424,6 @@ canvas {
 .request-list div {
   padding: 15px;
   border-left: 5px solid var(--sun);
-  border-radius: 6px;
   background: white;
 }
 
@@ -259,7 +444,8 @@ canvas {
   }
 
   .hero,
-  .request-section {
+  .request-section,
+  .season-layout {
     grid-template-columns: 1fr;
   }
 
@@ -267,9 +453,19 @@ canvas {
     min-height: auto;
     padding: 34px 24px;
     background-image:
-      linear-gradient(180deg, rgba(238, 245, 242, 0.95) 0%, rgba(238, 245, 242, 0.84) 58%, rgba(238, 245, 242, 0.38) 100%),
+      linear-gradient(180deg, rgba(247, 251, 248, 0.97) 0%, rgba(247, 251, 248, 0.86) 58%, rgba(247, 251, 248, 0.42) 100%),
       url("assets/rain-gauge-hero.png");
     background-position: center right;
+  }
+
+  .hero-copy,
+  .hero-panel {
+    margin-bottom: 0;
+    padding-bottom: 20px;
+  }
+
+  .hero::after {
+    display: none;
   }
 
   .section-heading,
@@ -277,11 +473,14 @@ canvas {
     display: block;
   }
 
+  .chart-controls,
   .legend {
     margin-top: 16px;
   }
 
-  .stats-grid {
+  .impact-grid,
+  .stats-grid,
+  .season-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -289,15 +488,24 @@ canvas {
 @media (max-width: 560px) {
   .summary-band,
   .chart-section,
+  .thanks-band,
+  .season-section,
   .request-section {
     padding: 20px;
   }
 
-  .stats-grid {
+  .impact-grid,
+  .stats-grid,
+  .season-cards {
     grid-template-columns: 1fr;
   }
 
   .chart-wrap {
     min-height: 420px;
+  }
+
+  .chart-controls {
+    align-items: stretch;
+    flex-direction: column;
   }
 }

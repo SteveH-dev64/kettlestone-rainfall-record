@@ -8,34 +8,103 @@
   </head>
   <body>
     <main>
-      <section class="hero">
+      <section class="hero" id="top">
         <div class="hero-copy">
-          <p class="eyebrow">Kettlestone weather notes</p>
-          <h1>Building a longer village rainfall record</h1>
+          <h1>Kettlestone Rainfall Record</h1>
           <p class="intro">
-            I started recording weekly rainfall this year. I am hoping to compare it with older
-            local readings so we can see how this season fits into the village's longer pattern.
+            Thank you Bob and Bridget for sharing the older rainfall totals. They let us compare this year's
+            weekly notes with a wider local story: month by month, season by season, and year by
+            year.
           </p>
-          <div class="hero-actions">
-            <a href="#data-request" class="primary-action">Share older readings</a>
-            <a href="#summary" class="secondary-action">View current summary</a>
+          <div class="hero-actions" aria-label="Page sections">
+            <a href="#monthly" class="primary-action">Explore the record</a>
+            <a href="#thanks" class="secondary-action">Read the thank you</a>
           </div>
+        </div>
+        <div class="hero-panel" aria-label="Rainfall record highlights">
+          <span>Record now covers</span>
+          <strong>2023-2026</strong>
+          <em>with 2026 built from weekly readings</em>
         </div>
       </section>
 
-      <section id="summary" class="summary-band">
+      <section id="thanks" class="thanks-band">
+        <div class="section-heading">
+          <p class="eyebrow">A proper thank you</p>
+          <h2>What your older data makes possible</h2>
+        </div>
+        <div class="impact-grid">
+          <article>
+            <span>01</span>
+            <h3>Longer context</h3>
+            <p>
+              A single year can feel unusually wet or dry. Several years let us see whether a month
+              is genuinely standing out.
+            </p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Fair comparison</h3>
+            <p>
+              The 2026 weekly readings are converted into monthly totals so they can sit alongside
+              the older monthly records.
+            </p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Village memory</h3>
+            <p>
+              The result is a small local weather archive that can grow whenever another notebook,
+              gauge, or spreadsheet appears.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="summary-band" aria-labelledby="summary-title">
         <div class="section-heading">
           <p class="eyebrow">Current 2026 record</p>
-          <h2>Rainfall so far</h2>
+          <h2 id="summary-title">Rainfall so far</h2>
         </div>
         <div class="stats-grid" id="statsGrid"></div>
       </section>
 
-      <section class="chart-section" aria-labelledby="chart-title">
+      <section id="monthly" class="chart-section" aria-labelledby="monthly-title">
+        <div class="chart-heading">
+          <div>
+            <p class="eyebrow">Month by month</p>
+            <h2 id="monthly-title">Monthly rainfall comparison</h2>
+          </div>
+          <div class="chart-controls" aria-label="Chart display options">
+            <button class="is-active" type="button" data-chart-mode="grouped">By year</button>
+            <button type="button" data-chart-mode="focus">2026 focus</button>
+          </div>
+        </div>
+        <div class="chart-wrap monthly-wrap">
+          <canvas id="monthlyChart" aria-label="Monthly rainfall comparison chart"></canvas>
+        </div>
+        <p class="source-note" id="monthlyNote">
+          The 2023-2025 values are monthly totals from the shared historical record. The 2026 values
+          are calculated by splitting weekly totals across the months they cross.
+        </p>
+      </section>
+
+      <section class="season-section" aria-labelledby="season-title">
+        <div class="section-heading">
+          <p class="eyebrow">Patterns</p>
+          <h2 id="season-title">Seasonal signals</h2>
+        </div>
+        <div class="season-layout">
+          <div class="season-cards" id="seasonCards"></div>
+          <div class="year-rings" id="yearRings" aria-label="Year total comparison"></div>
+        </div>
+      </section>
+
+      <section class="chart-section" aria-labelledby="weekly-title">
         <div class="chart-heading">
           <div>
             <p class="eyebrow">Rainfall and temperature</p>
-            <h2 id="chart-title">Weekly rainfall with max and min temperatures</h2>
+            <h2 id="weekly-title">Weekly 2026 rainfall with max and min temperatures</h2>
           </div>
           <div class="legend" aria-label="Chart legend">
             <span><i class="rain"></i>Rainfall mm</span>
@@ -54,26 +123,26 @@
 
       <section id="data-request" class="request-section">
         <div class="request-copy">
-          <p class="eyebrow">What would help</p>
-          <h2>Do you have older local rainfall readings?</h2>
+          <p class="eyebrow">Keep it growing</p>
+          <h2>More records can be added later</h2>
           <p>
-            Older readings from Kettlestone or nearby would make this much more useful. Weekly
-            totals are ideal, but monthly totals, handwritten notes, or photos of a notebook would
-            still be valuable.
+            Monthly totals, weekly totals, handwritten notes, or photos of old gauge readings can
+            all help extend the village record. The more years we add, the more interesting the
+            comparisons become.
           </p>
         </div>
-        <div class="request-list" aria-label="Requested rainfall data">
+        <div class="request-list" aria-label="Ways to add rainfall data">
           <div>
-            <strong>Most useful</strong>
-            <span>Week or date range, rainfall amount, and unit used.</span>
+            <strong>Best format</strong>
+            <span>Month or date range, rainfall amount, and unit used.</span>
           </div>
           <div>
-            <strong>Still helpful</strong>
-            <span>Monthly totals, unusually wet or dry notes, or gauge location.</span>
+            <strong>Still useful</strong>
+            <span>Scanned notebook pages, phone photos, or typed lists.</span>
           </div>
           <div>
-            <strong>Easy format</strong>
-            <span>A spreadsheet, typed list, scanned page, or phone photo is fine.</span>
+            <strong>Worth noting</strong>
+            <span>Gauge location, changes of gauge, or any unusual weather notes.</span>
           </div>
         </div>
       </section>
