@@ -1,6 +1,5 @@
-# Kettlestone Rainfall Record
+# Thank you, Lucy
 
-A small static website for sharing the current Kettlestone rainfall record and asking for older local rainfall data.
+Kettlestone rainfall record for Lucy: weekly readings for 2026, and monthly totals for 2023–2025, as a graph and tables.
 
-Open `index.html` locally, or publish the folder with GitHub Pages.
-
+Published with GitHub Pages from this repository.

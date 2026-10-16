@@ -1,153 +1,467 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kettlestone Rainfall Record</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <main>
-      <section class="hero" id="top">
-        <div class="hero-copy">
-          <h1>Kettlestone Rainfall Record</h1>
-          <p class="intro">
-            Thank you Bob and Bridget for sharing the older rainfall totals. They let us compare this year's
-            weekly notes with a wider local story: month by month, season by season, and year by
-            year.
-          </p>
-          <div class="hero-actions" aria-label="Page sections">
-            <a href="#monthly" class="primary-action">Explore the record</a>
-            <a href="#thanks" class="secondary-action">Read the thank you</a>
-          </div>
-        </div>
-        <div class="hero-panel" aria-label="Rainfall record highlights">
-          <span>Record now covers</span>
-          <strong>2023-2026</strong>
-          <em>with 2026 built from weekly readings</em>
-        </div>
-      </section>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thank you, Lucy — Kettlestone rainfall</title>
+  <meta name="description" content="Thank you, Lucy. The Kettlestone rainfall record for 2026 and earlier years, as a graph and tables.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:ital,opsz,wght@0,7..72,560;0,7..72,700;1,7..72,560&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%2316342c' width='32' height='32'/%3E%3Cpath fill='%23f3d7a1' d='M16 5c2 5 7 8 7 14a7 7 0 1 1-14 0c0-6 5-9 7-14z'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --ink: #1a2420;
+      --muted: #4d5c55;
+      --paper: #f4efe4;
+      --card: #fffaf2;
+      --line: #e2d8c8;
+      --green: #16342c;
+      --green-2: #21483d;
+      --gold: #f3d7a1;
+      --clay: #c4622d;
+      --focus: #9a4e12;
+    }
 
-      <section id="thanks" class="thanks-band">
-        <div class="section-heading">
-          <p class="eyebrow">A proper thank you</p>
-          <h2>What your older data makes possible</h2>
-        </div>
-        <div class="impact-grid">
-          <article>
-            <span>01</span>
-            <h3>Longer context</h3>
-            <p>
-              A single year can feel unusually wet or dry. Several years let us see whether a month
-              is genuinely standing out.
-            </p>
-          </article>
-          <article>
-            <span>02</span>
-            <h3>Fair comparison</h3>
-            <p>
-              The 2026 weekly readings are converted into monthly totals so they can sit alongside
-              the older monthly records.
-            </p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>Village memory</h3>
-            <p>
-              The result is a small local weather archive that can grow whenever another notebook,
-              gauge, or spreadsheet appears.
-            </p>
-          </article>
-        </div>
-      </section>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Atkinson Hyperlegible", "Avenir Next", "Segoe UI", sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
 
-      <section class="summary-band" aria-labelledby="summary-title">
-        <div class="section-heading">
-          <p class="eyebrow">Current 2026 record</p>
-          <h2 id="summary-title">Rainfall so far</h2>
-        </div>
-        <div class="stats-grid" id="statsGrid"></div>
-      </section>
+    .skip {
+      position: absolute;
+      left: 1rem;
+      top: -4rem;
+      background: #fff;
+      color: var(--ink);
+      padding: 0.5rem 0.8rem;
+      z-index: 5;
+    }
+    .skip:focus { top: 1rem; }
 
-      <section id="monthly" class="chart-section" aria-labelledby="monthly-title">
-        <div class="chart-heading">
-          <div>
-            <p class="eyebrow">Month by month</p>
-            <h2 id="monthly-title">Monthly rainfall comparison</h2>
-          </div>
-          <div class="chart-controls" aria-label="Chart display options">
-            <button class="is-active" type="button" data-chart-mode="grouped">By year</button>
-            <button type="button" data-chart-mode="focus">2026 focus</button>
-          </div>
-        </div>
-        <div class="chart-wrap monthly-wrap">
-          <canvas id="monthlyChart" aria-label="Monthly rainfall comparison chart"></canvas>
-        </div>
-        <p class="source-note" id="monthlyNote">
-          The 2023-2025 values are monthly totals from the shared historical record. The 2026 values
-          are calculated by splitting weekly totals across the months they cross.
-        </p>
-      </section>
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), transparent 30%),
+        repeating-linear-gradient(90deg, transparent 0 18px, rgba(243,215,161,0.07) 18px 19px),
+        var(--green);
+      color: #f7f3ea;
+      padding: 3rem 1.25rem 4rem;
+    }
 
-      <section class="season-section" aria-labelledby="season-title">
-        <div class="section-heading">
-          <p class="eyebrow">Patterns</p>
-          <h2 id="season-title">Seasonal signals</h2>
-        </div>
-        <div class="season-layout">
-          <div class="season-cards" id="seasonCards"></div>
-          <div class="year-rings" id="yearRings" aria-label="Year total comparison"></div>
-        </div>
-      </section>
+    .hero-inner, main { width: min(980px, 100%); margin: 0 auto; }
 
-      <section class="chart-section" aria-labelledby="weekly-title">
-        <div class="chart-heading">
-          <div>
-            <p class="eyebrow">Rainfall and temperature</p>
-            <h2 id="weekly-title">Weekly 2026 rainfall with max and min temperatures</h2>
-          </div>
-          <div class="legend" aria-label="Chart legend">
-            <span><i class="rain"></i>Rainfall mm</span>
-            <span><i class="max"></i>Max temp C</span>
-            <span><i class="min"></i>Min temp C</span>
-          </div>
-        </div>
+    .kicker {
+      margin: 0 0 1.2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+      color: var(--gold);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Literata, Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(4.2rem, 14vw, 8.4rem);
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+    }
+
+    h1 span {
+      display: block;
+      font-style: italic;
+      font-weight: 560;
+      font-size: 0.42em;
+      letter-spacing: 0;
+      color: var(--gold);
+      margin-bottom: 0.15em;
+    }
+
+    .message {
+      max-width: 38rem;
+      margin: 1.6rem 0 0;
+      font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+      line-height: 1.45;
+    }
+
+    .from {
+      margin: 1.4rem 0 0;
+      color: var(--gold);
+      font-family: Literata, Georgia, serif;
+      font-style: italic;
+      font-size: 1.25rem;
+    }
+
+    .down {
+      display: inline-block;
+      margin-top: 2.2rem;
+      color: #f7f3ea;
+      text-underline-offset: 0.25em;
+    }
+    .down:hover { color: var(--gold); }
+    .down:focus-visible, a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    main { padding: 2.5rem 1.25rem 4rem; }
+    section { margin-top: 2.4rem; }
+    h2 {
+      font-family: Literata, Georgia, serif;
+      font-size: clamp(1.8rem, 3vw, 2.3rem);
+      line-height: 1.15;
+      margin: 0 0 0.4rem;
+    }
+    .section-note { margin: 0 0 1rem; color: var(--muted); max-width: 42rem; }
+
+    .totals {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .total {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.9rem 1rem 1rem;
+    }
+    .total .year { margin: 0; color: var(--muted); font-size: 0.92rem; }
+    .total strong {
+      display: block;
+      margin-top: 0.15rem;
+      font-family: Literata, Georgia, serif;
+      font-size: 1.7rem;
+      letter-spacing: -0.03em;
+    }
+    .total .unit { font-size: 0.95rem; font-weight: 400; color: var(--muted); }
+    .total.now { border-color: #e7c2ae; background: #fff6ef; }
+    .swatch {
+      display: inline-block;
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 50%;
+      margin-right: 0.35rem;
+      vertical-align: -0.05rem;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1rem 1rem 0.6rem;
+    }
+    .chart-wrap { position: relative; }
+    canvas { width: 100%; height: auto; display: block; touch-action: pan-y; }
+    .tip {
+      position: absolute;
+      pointer-events: none;
+      background: var(--green);
+      color: #f7f3ea;
+      padding: 0.45rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      transform: translate(-50%, -120%);
+      white-space: nowrap;
+      display: none;
+    }
+    .legend { display: flex; flex-wrap: wrap; gap: 0.8rem 1.2rem; margin: 0.2rem 0 0.6rem; padding: 0; list-style: none; }
+    .legend button {
+      background: none;
+      border: 0;
+      font: inherit;
+      color: var(--ink);
+      cursor: pointer;
+      padding: 0.15rem 0.1rem;
+    }
+    .legend button[aria-pressed="false"] { opacity: 0.35; }
+
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
+    table { width: 100%; border-collapse: collapse; min-width: 36rem; }
+    th, td { text-align: right; padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--line); }
+    th:first-child, td:first-child { text-align: left; }
+    th { position: sticky; top: 0; background: #f3ecdf; font-size: 0.92rem; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tfoot td { font-weight: 700; background: #f7f1e6; }
+    .year-col { background: #fff6ef; }
+    caption {
+      caption-side: bottom;
+      text-align: left;
+      color: var(--muted);
+      padding: 0.8rem 0.9rem 1rem;
+      font-size: 0.92rem;
+    }
+
+    footer {
+      background: var(--green);
+      color: #f7f3ea;
+      padding: 2.2rem 1.25rem 2.6rem;
+    }
+    footer .hero-inner p { margin: 0.35rem 0; }
+    footer .again {
+      font-family: Literata, Georgia, serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      margin: 0 0 0.6rem;
+    }
+    footer .fine { color: #d5e0da; max-width: 40rem; font-size: 0.95rem; }
+
+    @media (max-width: 700px) {
+      .totals { grid-template-columns: 1fr 1fr; }
+      h1 { font-size: clamp(3.6rem, 18vw, 5rem); }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#record">Skip to the rainfall record</a>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="kicker">Kettlestone rainfall record</p>
+      <h1><span>Thank you,</span>Lucy</h1>
+      <p class="message">For helping to record the rainfall. This page is for you: this year’s readings, and the earlier years we already had, set out as a graph and as tables.</p>
+      <p class="from">From Steve</p>
+      <a class="down" href="#record">See the record</a>
+    </div>
+  </header>
+
+  <main id="record">
+    <section>
+      <h2>The years side by side</h2>
+      <p class="section-note">Monthly rainfall in millimetres. 2023, 2024 and 2025 are full years. 2026 is the gauge, added up from the weekly readings through 26 August.</p>
+      <div class="totals" id="totals"></div>
+    </section>
+
+    <section>
+      <h2>Graph</h2>
+      <div class="panel">
+        <ul class="legend" id="legend"></ul>
         <div class="chart-wrap">
-          <canvas id="weatherChart" aria-label="Weekly rainfall and temperature chart"></canvas>
+          <canvas id="chart" width="920" height="460" aria-label="Line graph of monthly rainfall for 2023, 2024, 2025 and 2026."></canvas>
+          <div class="tip" id="tip" role="status"></div>
         </div>
-        <p class="source-note">
-          Temperature figures are weekly max/min values calculated from daily Open-Meteo data near
-          Kettlestone. Later weeks are left blank until the week is complete.
-        </p>
-      </section>
+      </div>
+    </section>
 
-      <section id="data-request" class="request-section">
-        <div class="request-copy">
-          <p class="eyebrow">Keep it growing</p>
-          <h2>More records can be added later</h2>
-          <p>
-            Monthly totals, weekly totals, handwritten notes, or photos of old gauge readings can
-            all help extend the village record. The more years we add, the more interesting the
-            comparisons become.
-          </p>
-        </div>
-        <div class="request-list" aria-label="Ways to add rainfall data">
-          <div>
-            <strong>Best format</strong>
-            <span>Month or date range, rainfall amount, and unit used.</span>
-          </div>
-          <div>
-            <strong>Still useful</strong>
-            <span>Scanned notebook pages, phone photos, or typed lists.</span>
-          </div>
-          <div>
-            <strong>Worth noting</strong>
-            <span>Gauge location, changes of gauge, or any unusual weather notes.</span>
-          </div>
-        </div>
-      </section>
-    </main>
+    <section>
+      <h2>Monthly table</h2>
+      <div class="table-wrap">
+        <table id="monthly">
+          <caption>August 2026 includes only the days with a reading, through 26 August. A week that crosses two months is split by the number of days in each month.</caption>
+        </table>
+      </div>
+    </section>
 
-    <script src="app.js"></script>
-  </body>
+    <section>
+      <h2>This year, week by week</h2>
+      <p class="section-note">Each figure is the gauge for that week. A zero is a dry week that was written down.</p>
+      <div class="table-wrap">
+        <table id="weekly">
+          <caption>Weekly rainfall at Kettlestone in 2026, from 1 January to 26 August. Total 300 mm.</caption>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="hero-inner">
+      <p class="again">Thank you, Lucy.</p>
+      <p class="fine">Kettlestone rainfall record. Figures are in millimetres. The 2026 weekly readings in this record run from 1 January to 26 August.</p>
+    </div>
+  </footer>
+
+  <script>
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const series = [
+      { year: "2023", color: "#7f9789", values: [51, 15.5, 102, 77.5, 41.5, 24, 84, 59.5, 83, 146.5, 106.5, 94] },
+      { year: "2024", color: "#4d8494", values: [89, 143.5, 37.5, 58, 92.5, 42.5, 107, 16, 142, 48.5, 177, 82] },
+      { year: "2025", color: "#1f4d40", values: [39, 39.5, 15, 16.5, 36, 27.5, 36, 19.5, 57, 59.5, 103, 51] },
+      { year: "2026", color: "#c4622d", values: [72.7, 52.6, 41.4, 5, 33.6, 32.7, 3.1, 58.9, null, null, null, null], partial: 7 }
+    ];
+    const weeks = [
+      ["1 Jan – 7 Jan", 9], ["8 Jan – 14 Jan", 37], ["15 Jan – 21 Jan", 18], ["22 Jan – 28 Jan", 7],
+      ["29 Jan – 4 Feb", 4], ["5 Feb – 11 Feb", 15], ["12 Feb – 18 Feb", 20], ["19 Feb – 25 Feb", 11],
+      ["26 Feb – 4 Mar", 10], ["5 Mar – 11 Mar", 6], ["12 Mar – 18 Mar", 16], ["19 Mar – 25 Mar", 6],
+      ["26 Mar – 1 Apr", 9], ["2 Apr – 8 Apr", 0], ["9 Apr – 15 Apr", 2], ["16 Apr – 22 Apr", 0],
+      ["23 Apr – 29 Apr", 1], ["30 Apr – 6 May", 5], ["7 May – 13 May", 8], ["14 May – 20 May", 13.5],
+      ["21 May – 27 May", 1], ["28 May – 3 Jun", 12], ["4 Jun – 10 Jun", 14], ["11 Jun – 17 Jun", 10],
+      ["18 Jun – 24 Jun", 1], ["25 Jun – 1 Jul", 3], ["2 Jul – 8 Jul", 0], ["9 Jul – 15 Jul", 0],
+      ["16 Jul – 22 Jul", 0], ["23 Jul – 29 Jul", 1.5], ["30 Jul – 5 Aug", 4], ["6 Aug – 12 Aug", 0],
+      ["13 Aug – 19 Aug", 17], ["20 Aug – 26 Aug", 39]
+    ];
+
+    const shown = new Set(series.map((s) => s.year));
+
+    function mm(n) {
+      if (n == null || Number.isNaN(n)) return "—";
+      const text = Number.isInteger(n) ? String(n) : n.toFixed(1);
+      return text;
+    }
+
+    function sum(values) {
+      return values.reduce((total, n) => total + (n || 0), 0);
+    }
+
+    const totals = document.querySelector("#totals");
+    series.forEach((item) => {
+      const card = document.createElement("article");
+      card.className = "total" + (item.year === "2026" ? " now" : "");
+      const total = sum(item.values);
+      const label = item.year === "2026" ? "2026 so far" : item.year;
+      card.innerHTML = `<p class="year"><span class="swatch" style="background:${item.color}"></span>${label}</p><strong>${mm(total)} <span class="unit">mm</span></strong>`;
+      totals.appendChild(card);
+    });
+
+    const monthly = document.querySelector("#monthly");
+    const head = document.createElement("thead");
+    head.innerHTML = "<tr><th>Month</th>" + series.map((s) => `<th${s.year === "2026" ? ' class="year-col"' : ""}>${s.year}</th>`).join("") + "</tr>";
+    monthly.appendChild(head);
+    const body = document.createElement("tbody");
+    months.forEach((month, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `<th scope="row">${month}</th>` + series.map((s) => {
+        let text = mm(s.values[index]);
+        if (s.year === "2026" && index === s.partial && s.values[index] != null) text += "*";
+        return `<td${s.year === "2026" ? ' class="year-col"' : ""}>${text}</td>`;
+      }).join("");
+      body.appendChild(row);
+    });
+    monthly.appendChild(body);
+    const foot = document.createElement("tfoot");
+    foot.innerHTML = `<tr><th scope="row">Total</th>${series.map((s) => `<td${s.year === "2026" ? ' class="year-col"' : ""}>${mm(sum(s.values))}${s.year === "2026" ? "*" : ""}</td>`).join("")}</tr>`;
+    monthly.appendChild(foot);
+
+    const weekly = document.querySelector("#weekly");
+    weekly.innerHTML += "<thead><tr><th>Week</th><th>Period</th><th>Rainfall (mm)</th></tr></thead>";
+    const wbody = document.createElement("tbody");
+    weeks.forEach((week, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `<th scope="row">${index + 1}</th><td style="text-align:left">${week[0]}</td><td>${mm(week[1])}</td>`;
+      wbody.appendChild(row);
+    });
+    weekly.appendChild(wbody);
+    const wfoot = document.createElement("tfoot");
+    wfoot.innerHTML = `<tr><th scope="row" colspan="2">Total</th><td>${mm(weeks.reduce((t, w) => t + w[1], 0))}</td></tr>`;
+    weekly.appendChild(wfoot);
+
+    const legend = document.querySelector("#legend");
+    series.forEach((item) => {
+      const li = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.setAttribute("aria-pressed", "true");
+      button.innerHTML = `<span class="swatch" style="background:${item.color}"></span>${item.year}`;
+      button.addEventListener("click", () => {
+        if (shown.has(item.year)) shown.delete(item.year);
+        else shown.add(item.year);
+        button.setAttribute("aria-pressed", shown.has(item.year) ? "true" : "false");
+        draw();
+      });
+      li.appendChild(button);
+      legend.appendChild(li);
+    });
+
+    const canvas = document.querySelector("#chart");
+    const tip = document.querySelector("#tip");
+    const ctx = canvas.getContext("2d");
+    const points = [];
+
+    function layout() {
+      const width = canvas.clientWidth;
+      const height = Math.max(280, Math.round(width * 0.48));
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      canvas.style.height = height + "px";
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      return { width, height };
+    }
+
+    function draw() {
+      const { width, height } = layout();
+      const pad = { l: 46, r: 16, t: 16, b: 36 };
+      const plotW = width - pad.l - pad.r;
+      const plotH = height - pad.t - pad.b;
+      const yMax = 200;
+      ctx.clearRect(0, 0, width, height);
+      ctx.font = "13px Atkinson Hyperlegible, sans-serif";
+      ctx.fillStyle = "#4d5c55";
+      ctx.strokeStyle = "#e6dccb";
+      ctx.lineWidth = 1;
+      for (let tick = 0; tick <= yMax; tick += 50) {
+        const y = pad.t + plotH - (tick / yMax) * plotH;
+        ctx.beginPath();
+        ctx.moveTo(pad.l, y);
+        ctx.lineTo(width - pad.r, y);
+        ctx.stroke();
+        ctx.textAlign = "right";
+        ctx.textBaseline = "middle";
+        ctx.fillText(String(tick), pad.l - 8, y);
+      }
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      months.forEach((month, index) => {
+        const x = pad.l + (index + 0.5) * (plotW / 12);
+        ctx.fillText(month, x, height - pad.b + 10);
+      });
+
+      points.length = 0;
+      series.filter((item) => shown.has(item.year)).forEach((item) => {
+        ctx.beginPath();
+        ctx.strokeStyle = item.color;
+        ctx.lineWidth = item.year === "2026" ? 3 : 2;
+        let started = false;
+        item.values.forEach((value, index) => {
+          if (value == null) return;
+          const x = pad.l + (index + 0.5) * (plotW / 12);
+          const y = pad.t + plotH - (value / yMax) * plotH;
+          if (!started) { ctx.moveTo(x, y); started = true; }
+          else ctx.lineTo(x, y);
+          points.push({ x, y, year: item.year, month: months[index], value, color: item.color, partial: item.partial === index });
+        });
+        ctx.stroke();
+        item.values.forEach((value, index) => {
+          if (value == null) return;
+          const x = pad.l + (index + 0.5) * (plotW / 12);
+          const y = pad.t + plotH - (value / yMax) * plotH;
+          ctx.beginPath();
+          ctx.fillStyle = item.partial === index ? "#fffaf2" : item.color;
+          ctx.strokeStyle = item.color;
+          ctx.lineWidth = 2;
+          ctx.arc(x, y, item.year === "2026" ? 4.5 : 3.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        });
+      });
+    }
+
+    function showTip(event) {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      let nearest = null;
+      points.forEach((point) => {
+        const distance = Math.hypot(point.x - x, point.y - y);
+        if (distance < 22 && (!nearest || distance < nearest.distance)) nearest = { ...point, distance };
+      });
+      if (!nearest) { tip.style.display = "none"; return; }
+      tip.style.display = "block";
+      tip.style.left = nearest.x + "px";
+      tip.style.top = nearest.y + "px";
+      tip.textContent = `${nearest.year} ${nearest.month}: ${mm(nearest.value)} mm` + (nearest.partial ? " (to 26 Aug)" : "");
+    }
+
+    canvas.addEventListener("mousemove", showTip);
+    canvas.addEventListener("mouseleave", () => { tip.style.display = "none"; });
+    window.addEventListener("resize", draw);
+    draw();
+  </script>
+</body>
 </html>
